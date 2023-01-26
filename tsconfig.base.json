@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@sika-app/shared": ["libs/shared/src/index.ts"]
+      "@sika-app/shared": ["libs/shared-lib/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
