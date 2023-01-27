@@ -1,0 +1,77 @@
+import {
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  HttpStatus,
+  HttpCode,
+  Query,
+} from '@nestjs/common';
+import { DeepPartial, FindOptionsWhere } from 'typeorm';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
+import { PaginationParams } from './pagination-params';
+import { BaseEntity } from '../entities/base.entity';
+import { UUIDValidationPipe } from '../pipes';
+import { ICrudService, IPagination } from '@sika-app/contracts';
+
+export abstract class CrudController<T extends BaseEntity> {
+  protected constructor(private readonly crudService: ICrudService<T>) {}
+
+  @Get('count')
+  async getCount(
+    @Query() options?: FindOptionsWhere<T>
+  ): Promise<number | void> {
+    return await this.crudService.countBy(options);
+  }
+
+  @Get('pagination')
+  async pagination(
+    @Query() filter?: PaginationParams<T>,
+    ...options: any[]
+  ): Promise<IPagination<T> | void> {
+    return this.crudService.paginate(filter);
+  }
+
+  @Get()
+  async findAll(
+    filter?: PaginationParams<T>,
+    ...options: any[]
+  ): Promise<IPagination<T>> {
+    return this.crudService.findAll(filter);
+  }
+
+  @Get(':id')
+  async findById(
+    @Param('id', UUIDValidationPipe) id: T['id'],
+    ...options: any[]
+  ): Promise<T> {
+    return this.crudService.findOneByIdString(id);
+  }
+
+  @HttpCode(HttpStatus.CREATED)
+  @Post()
+  async create(@Body() entity: DeepPartial<T>, ...options: any[]): Promise<T> {
+    return this.crudService.create(entity);
+  }
+
+  @HttpCode(HttpStatus.ACCEPTED)
+  @Put(':id')
+  async update(
+    @Param('id', UUIDValidationPipe) id: string,
+    @Body() entity: QueryDeepPartialEntity<T>,
+    ...options: any[]
+  ): Promise<any> {
+    return this.crudService.update(id, entity); // FIXME: https://github.com/typeorm/typeorm/issues/1544
+  }
+
+  @HttpCode(HttpStatus.ACCEPTED)
+  @Delete(':id')
+  async delete(
+    @Param('id', UUIDValidationPipe) id: string,
+    ...options: any[]
+  ): Promise<any> {
+    return this.crudService.delete(id);
+  }
+}

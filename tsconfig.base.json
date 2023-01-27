@@ -10,13 +10,27 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2017", "dom"],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@sika-app/shared": ["libs/shared-lib/src/index.ts"]
+      "@sika-app/common": [
+        "libs/common-lib/src/index.ts"
+      ],
+      "@sika-app/contracts": [
+        "libs/contracts-lib/src/index.ts"
+      ],
+      "@sika-app/shared": [
+        "libs/shared-lib/src/index.ts"
+      ]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }

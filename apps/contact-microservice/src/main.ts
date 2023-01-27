@@ -25,7 +25,6 @@ async function bootstrap() {
     }
   );
   await app.listen();
-  Logger.log(`🚀  CONTACT_MICROSERVICE is running`);
 }
 
 bootstrap();

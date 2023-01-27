@@ -7,5 +7,5 @@
     "types": ["node"]
   },
   "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"],
-  "include": ["src/**/*.ts", "../contracts-lib/src/lib/crud/icrud.service.ts", "../contracts-lib/src/lib/base/base.interface.ts", "../contracts-lib/src/lib/crud/try-request.ts"]
+  "include": ["src/**/*.ts"]
 }
