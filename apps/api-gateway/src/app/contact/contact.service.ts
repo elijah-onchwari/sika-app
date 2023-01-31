@@ -1,6 +1,11 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { CreateContactUserDto } from '@sika-app/shared';
+import {
+  Contact,
+  CreateContactUserDto,
+  PaginationParams,
+  UpdateUserDTO,
+} from '@sika-app/shared';
 
 @Injectable()
 export class ContactService implements OnModuleInit {
@@ -9,21 +14,30 @@ export class ContactService implements OnModuleInit {
   ) {}
 
   onModuleInit() {
-    this.contactClient.subscribeToResponseOf('get_all_contacts');
+    this.contactClient.subscribeToResponseOf('find_all_contacts');
+    this.contactClient.subscribeToResponseOf('pagination');
+    this.contactClient.subscribeToResponseOf('delete_contact_user');
   }
 
-  createContactUser(createContactUserDto: CreateContactUserDto) {
-    console.log(
-      '🚀 ~ file: contact.service.ts:12 ~ ContactService ~ createContactUser ~ createContactUserDto',
-      createContactUserDto
-    );
-    this.contactClient.emit(
-      'create_contact_user',
-      JSON.stringify(createContactUserDto)
-    );
+  createContact(dto: CreateContactUserDto) {
+    this.contactClient.emit('create_contact_user', JSON.stringify(dto));
   }
 
-  getAllContacts() {
-    return this.contactClient.send('get_all_contacts', '');
+  findAll(filters: PaginationParams<Contact>) {
+    return this.contactClient.send('find_all_contacts', filters);
+  }
+
+  paginate(filters: PaginationParams<Contact>) {
+    return this.contactClient.send('pagination', filters);
+  }
+
+  update(id: string, dto: UpdateUserDTO) {
+    return this.contactClient.emit(
+      'update_contact_user',
+      JSON.stringify({ id, dto })
+    );
+  }
+  delete(id: string) {
+    return this.contactClient.send('delete_contact_user', { id });
   }
 }

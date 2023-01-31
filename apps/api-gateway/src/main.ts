@@ -6,6 +6,7 @@
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app/app.module';
 
@@ -15,6 +16,15 @@ async function bootstrap() {
 
   // Validation
   // app.useGlobalFilters(new ApiExceptionFilter());
+
+  const options = new DocumentBuilder()
+    .setTitle('SIKA APP API')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+
+  const document = SwaggerModule.createDocument(app, options);
+  SwaggerModule.setup('doc', app, document);
 
   const environment = config.get('environment');
   const port = config.get('port');

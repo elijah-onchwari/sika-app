@@ -8,9 +8,9 @@ export interface IBaseSoftDeleteEntity {
 }
 
 export interface IBaseEntity extends IBaseSoftDeleteEntity {
-	id: string;
-	readonly createdAt: Date;
-	readonly updatedAt: Date;
+	id?: string;
+	readonly createdAt?: Date;
+	readonly updatedAt?: Date;
 }
 
 export interface IPaginationInput {

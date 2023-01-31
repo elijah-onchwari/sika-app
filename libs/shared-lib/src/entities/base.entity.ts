@@ -14,11 +14,11 @@ export abstract class Model {
 }
 export abstract class BaseEntity extends Model implements IBaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id?: string;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt?: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt?: Date;
 }

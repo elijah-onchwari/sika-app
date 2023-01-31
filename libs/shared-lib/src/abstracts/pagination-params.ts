@@ -45,10 +45,9 @@ export abstract class OptionParams<T> extends OptionsRelations<T> {
   /**
    * Simple condition that should be applied to match entities.
    */
-  @IsNotEmpty()
-  @ValidateNested({ each: true })
-  // @Type(() => TenantOrganizationBaseDTO)
-  readonly where: {
+  @IsOptional()
+  // @ValidateNested({ each: true })
+  readonly where?: {
     [P in keyof T]?: FindOptionsWhereProperty<NonNullable<T[P]>>;
   };
 
