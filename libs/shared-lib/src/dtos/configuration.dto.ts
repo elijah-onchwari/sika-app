@@ -6,6 +6,8 @@ export class Configuration {
   postgresDatabaseName: string;
   postgresUsername: string;
   postgresPassword: string;
+  throttleTtl: number;
+  throttleLimit: number;
 }
 
 export const getConfigFromEnv = (): Configuration => ({
@@ -16,4 +18,6 @@ export const getConfigFromEnv = (): Configuration => ({
   postgresDatabaseName: process.env.POSTGRES_DATABASE_NAME,
   postgresUsername: process.env.POSTGRES_USERNAME,
   postgresPassword: process.env.POSTGRES_PASSWORD,
+  throttleTtl: parseInt(process.env.THROTTLE_TTL),
+  throttleLimit: parseInt(process.env.THROTTLE_LIMIT),
 });

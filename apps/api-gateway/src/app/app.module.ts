@@ -1,9 +1,7 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { getConfigFromEnv } from '@sika-app/shared';
-
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ContactModule } from './contact/contact.module';
 
 @Module({
@@ -15,8 +13,16 @@ import { ContactModule } from './contact/contact.module';
       load: [getConfigFromEnv],
       //   validationSchema,
     }),
+    ThrottlerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        ttl: config.get('throttleTtl'),
+        limit: config.get('throttleLimit'),
+      }),
+    }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
